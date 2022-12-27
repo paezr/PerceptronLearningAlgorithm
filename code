@@ -1,0 +1,87 @@
+import numpy
+
+
+def multiply_vectors(vector1, vector2):
+    x = 0
+    vector2 = [1, vector2[0], vector2[1]]
+    for num1, num2 in zip(vector1, vector2):
+        x += (num1 * num2)
+    return x
+
+
+def add_vectors(vector1, vector2):
+    added_vector = []
+    for num1, num2 in zip(vector1, vector2):
+        added_vector.append(num1 + num2)
+    return added_vector
+
+
+def new_vector(weight_vector, data_vector):
+    result_vector = [1, data_vector[0], data_vector[1]]
+    for i in range(len(data_vector)):
+        result_vector[i] *= data_vector[-1]
+    result_vector = add_vectors(weight_vector, result_vector)
+    return result_vector
+
+
+data_list = [
+    [9, 8, -1],
+    [42, 8, -1],
+    [30, 6, -1],
+    [10, 80, -1],
+    [30, 87, -1],
+    [57, 11, -1],
+    [40, 9, -1],
+    [31, 90, -1],
+    [23, 106, -1],
+    [15, 56, -1],
+    [-38, -64, 1],
+    [-47, -65, 1],
+    [-24, -7, 1],
+    [-16, -40, 1],
+    [-24, -69, 1],
+    [-23, -9, 1],
+    [-17, -10, 1],
+    [-34, -12, 1],
+    [-18, -55, 1],
+    [-25, -86, 1]
+]
+
+
+def pla(data_list):
+    result_sign = 0
+    output_sign = 0
+    weight_vector = [0, 0, 0]
+
+    weight_found = False
+    while not weight_found:
+        for data_vector in data_list:
+            print("Current data vector:" + str(data_vector))
+            result = multiply_vectors(weight_vector, data_vector)
+            print("result after *weight is: " + str(result) + " and data's Y is: " + str(data_vector[-1]))
+            # Compare signs
+            if result < 0:
+                result_sign = -1
+            else:
+                result_sign = 1
+            if data_vector[-1] < 0:
+                output_sign = -1
+            else:
+                output_sign = 1
+            print("result sign is " + str(result_sign) + " y sign is " + str(output_sign))
+            if (int(result_sign) == int(output_sign)):
+                print("signs match")
+                weight_found = True
+                print()
+
+            else:
+                weight_found = False
+                print("signs do not match")
+                weight_vector = new_vector(weight_vector, data_vector)
+                print('new weight vector is ' + str(weight_vector))
+                break
+
+        print(weight_vector)
+
+
+pla(data_list)
